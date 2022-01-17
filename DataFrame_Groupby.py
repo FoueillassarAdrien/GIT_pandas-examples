@@ -10,7 +10,7 @@ users = pd.read_csv('dataSet/users.txt', engine='python',
                     sep='::', header=None, names=userHeader)
 
 movieHeader = ['movie_id', 'title', 'genders']
-movies = pd.read_csv('dataSet/movies.txt', engine='python',
+movies = pd.read_csv('dataSet/movies.txt', engine='python', encoding = "ISO-8859-1",
                      sep='::', header=None, names=movieHeader)
 
 ratingHeader = ['user_id', 'movie_id', 'rating', 'timestamp']
@@ -24,7 +24,11 @@ mergeRatings = pd.merge(pd.merge(users, ratings), movies)
 
 
 def cloneDF(df):
-    return pd.DataFrame(df.values.copy(), df.index.copy(), df.columns.copy()).convert_objects(convert_numeric=True)
+    return pd.DataFrame(df.values.copy(), df.index.copy(), df.columns.copy())
+    X = pd.DataFrame(df.values.copy(), df.index.copy(), df.columns.copy())
+    X = X._convert(numeric=True)
+    return X
+
 
 
 # Show Films with more votes. (groupby + sorted)
@@ -39,6 +43,7 @@ print('\n==================================================================\n')
 avgRatings = cloneDF(mergeRatings)
 avgRatings = avgRatings.groupby(['movie_id', 'title']).mean()
 print('Avg ratings: \n%s' % avgRatings['rating'][:10])
+print("Coucou l'ilot !")
 print('\n==================================================================\n')
 
 
@@ -59,7 +64,9 @@ print('\n==================================================================\n')
 
 
 # Sort data ratings by created field (groupby + lambda function + sorted)
+
 sortRatingsField_Nananère = cloneDF(mergeRatings)
 sortRatingsField_Nananère = sortRatingsField_Nananère.groupby(['movie_id', 'title'])['rating'].agg(
     {'COUNT': np.size, 'myAVG': lambda x: x.sum() / float(x.count())}).sort('COUNT', ascending=False)
 print('My info sorted: \n%s' % sortRatingsField_Nananère[:15])
+
