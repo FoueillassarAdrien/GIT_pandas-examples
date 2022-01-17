@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__author__ = 'Who ?'
+__author__ = 'Philo'
 
 import pandas as pd
 import numpy as np
@@ -22,8 +22,13 @@ mergeRatings = pd.merge(pd.merge(users, ratings), movies)
 
 # Clone DataFrame
 
+
 def cloneDF(df):
     return pd.DataFrame(df.values.copy(), df.index.copy(), df.columns.copy())
+    X = pd.DataFrame(df.values.copy(), df.index.copy(), df.columns.copy())
+    X = X._convert(numeric=True)
+    return X
+
 
 
 # Show Films with more votes. (groupby + sorted)
